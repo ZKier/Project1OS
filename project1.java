@@ -4,26 +4,26 @@ import java.util.*;
 
 public class project1 {
 
-      static int[][] table = table_gen(15); 
+	static int[][] table = table_gen(15); 
 
-      public static void main(String[] args) {
+	public static void main(String[] args) {
 
-      }  
+	}  
 
-
-      static class stats implements Runnable {
+	
+	static class stats implements Runnable {
       
-      int function;
+		int function;
    
-      public stats(int num) {
-            function = num;
+		public stats(int num) {
+			function = num;
       
-      }
+		}
    
-      public void run() {
+		public void run() {
             
-      }
+		}
    
-   }
+	}
 
 }

@@ -65,7 +65,10 @@
 import java.util.*;
 
 public class project1 {
-
+	
+	int WEST_BOUND = 2;
+	int EAST_BOUND = 1;
+	
 	public static void main(String[] args) {
 		
 		ArrayList<Integer> westBoundCars;
@@ -78,12 +81,18 @@ public class project1 {
 
 	static ArryaList<Integer> carGenerator;
 	
-	static class stats implements Runnable {
-      
+	static class road implements Runnable {
+
 		int function;
    
-		public stats(int num) {
-			function = num;
+		public road(int direction) {
+			if (direction == EAST_BOUND) {
+				
+			} else if (direction == WEST_BOUND) {
+				
+			} else {
+				
+			}
       
 		}
    

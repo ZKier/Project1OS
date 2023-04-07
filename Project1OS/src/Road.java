@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.concurrent.*;
 
-public class road implements Runnable {
+public class Road implements Runnable {
 		
 	int WEST_BOUND = 2;
 	int EAST_BOUND = 1;
@@ -10,7 +10,7 @@ public class road implements Runnable {
 	ArrayList<Integer> carsOnRoad;
 
 	
-	public road(int bound, ArrayList<Integer> list, Semaphore s) {
+	public Road(int bound, ArrayList<Integer> list, Semaphore s) {
 		
 		this.direction = bound;
 		this.carsOnRoad = list;

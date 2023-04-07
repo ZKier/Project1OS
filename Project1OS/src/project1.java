@@ -6,20 +6,7 @@ public class project1 {
 	static int WEST_BOUND = 2;
 	static int EAST_BOUND = 1;
 	
-	public static void main(String[] args) {
-		
-		System.out.println("Cars on bridge: not printed yet but imma do that");
-		
-		//semaphore object creation
-		//list creation
-		//create two threads
-		ArrayList<Integer> westBoundCars = new ArrayList<>();
-		ArrayList<Integer> eastBoundCars = new ArrayList<>();
-		
-		ArrayList<Integer> carOnBridge = new ArrayList<>(); //size should never be greater than one.
-		
-		ArrayList<Integer> carsPastBridge = new ArrayList<>();
-		
+	public static void main(String[] args) throws InterruptedException {		
 		
 		ArrayList<Integer> cars = new ArrayList<>();
 		
@@ -36,10 +23,16 @@ public class project1 {
 		
 		System.out.println(cars);
 		
-		Semaphore S = new Semaphore(1);
+		Semaphore S = new Semaphore(1, true);
 		
 		Road eastBound = new Road(EAST_BOUND, cars, S);
 		Road westBound = new Road(WEST_BOUND, cars, S);
+		
+		
+		eastBound.start();		westBound.start();
+
+		eastBound.join();		westBound.join();
+
 		
 	}  
 

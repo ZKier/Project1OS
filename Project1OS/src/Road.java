@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.concurrent.*;
 
-public class Road implements Runnable {
+public class Road extends Thread {
 		
 	int WEST_BOUND = 2;
 	int EAST_BOUND = 1;
@@ -15,103 +15,95 @@ public class Road implements Runnable {
 		this.direction = bound;
 		this.carsOnRoad = list;
 		this.s = s;
-		
-		
-		//this section may not matter****** not sure yet
-		if (direction == EAST_BOUND) {
-			//populate an odd number list
-		} else if (direction == WEST_BOUND) {
-			//populate an even number list
-		} else {
-			//close code and run an error
-		}
-		
+	
 	}
 	
-	//runs automatically when road is created.
+	//runs automatically when road is started.
 	public void run() {
-		//maybe start it off running
-		//then make a pause
-		
-		//not sure frfr going to sleep
 
 		if (this.direction == EAST_BOUND) {
 			
             System.out.println("Starting East Bound thread...");
             
             try {
-            	System.out.println("East Bound thread trying to acquire");
-            	
-                //Imagine this to be the green light that starts the West Bound's Red Light
-                s.acquire();
                 
-                //Critical Section
                 int arrayLength = this.carsOnRoad.size();
-                
+                //works its way down the list of cars on the road
                 for (int i = 0; i < arrayLength; i++) {
+                	
                 	int carNum = this.carsOnRoad.get(i);
-                	if ((carNum % 2) == 1/*index value odd, print arrival, sleep, print passed, release */) {
-                		System.out.println("East bound vehicle: " + carNum + " is arriving");
+                	if ((carNum % 2) == 1) {
+                		
+                		//Imagine this to be the green light that starts the West Bound's Red Light
+                        s.acquire();
+                        
+                        //Critical Section
+                        System.out.println("East bound light turns: GREEN");
+                		System.out.println("East --> bound vehicle: " + carNum + " is arriving");
                 		
                 		//does a sleep which is representative of the speed of the car
-                		int sleepTime = (int) ((Math.random() * 1000) + 200);
+                		int sleepTime = (int) ((Math.random() * 2000) + 750);
                 		Thread.sleep(sleepTime);
-                		System.out.println("East bound vehicle: " + carNum + " has passed");
+                		System.out.println("East --> bound vehicle: " + carNum + " has passed\n");
+                		
+                		//gives other threads the chance to make their lights green
                 		s.release();
+                		
                 	} else {
                 		continue;
                 	}
-                    //sharedCounter.counter++;
-                    //System.out.println(threadName + " current value: " + sharedCounter.counter); 
                 	
-                    // Now incrementer thread will sleep so that the decrementer thread 
-                    //(if a context switch happen) get a chance to update
-                    //Thread.sleep(SLEEP_TIME); //change to 100, and then 1000
                 }
+                
             } catch (InterruptedException e) {
-                    System.out.println(e);
+            	
+            	System.out.println(e);
+                    
             }
             
-            //prof added this in class
+            //releases the lock so that other threads can work and finish
             s.release();
 
         } else {
+        	
         	System.out.println("Starting West Bound thread...");
             
             try {
-            	System.out.println("West Bound thread trying to acquire");
-            	
-                //Imagine this to be the green light that starts the West Bound's Red Light
-                s.acquire();
                 
-                //Critical Section
                 int arrayLength = this.carsOnRoad.size();
                 
                 for (int i = 0; i < arrayLength; i++) {
+                	
                 	int carNum = this.carsOnRoad.get(i);
-                	if ((carNum % 2) == 0/*index value odd, print arrival, sleep, print passed, release */) {
-                		System.out.println("East bound vehicle: " + carNum + " is arriving");
+                	
+                	if ((carNum % 2) == 0) {
+                		//Imagine this to be the green light that starts the East Bound's Red Light
+                		s.acquire();
+                		//Critical Section
+                		System.out.println("West Bound light turns: GREEN");
+                		System.out.println("West <-- bound vehicle: " + carNum + " is arriving");
                 		
                 		//does a sleep which is representative of the speed of the car
-                		int sleepTime = (int) ((Math.random() * 1000) + 200);
+                		int sleepTime = (int) ((Math.random() * 2000) + 750);
                 		Thread.sleep(sleepTime);
-                		System.out.println("East bound vehicle: " + carNum + " has passed");
+                		System.out.println("West <-- bound vehicle: " + carNum + " has passed\n");
                 		s.release();
+                		
                 	} else {
+                		
                 		continue;
+                		
                 	}
-                    //sharedCounter.counter++;
-                    //System.out.println(threadName + " current value: " + sharedCounter.counter); 
-                	
-                    // Now incrementer thread will sleep so that the decrementer thread 
-                    //(if a context switch happen) get a chance to update
-                    //Thread.sleep(SLEEP_TIME); //change to 100, and then 1000
+
                 }
+                
             } catch (InterruptedException e) {
-                    System.out.println(e);
+                   
+            	System.out.println(e);
+            	
             }
             
-            //prof added this in class
+            //to make sure the other threads can finish
             s.release();
         }
 		
